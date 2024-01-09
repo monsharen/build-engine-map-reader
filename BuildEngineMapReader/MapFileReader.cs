@@ -92,7 +92,7 @@ namespace BuildEngineMapReader
         
         private static Objects.Map ParseFile(byte[] fileData)
         {
-            var memoryStream = new MemoryStream(fileData);
+            using (var memoryStream = new MemoryStream(fileData))
             using (var view = new BinaryReader(memoryStream))
             {
                 var map = new Objects.Map(view.ReadInt32());
@@ -114,9 +114,11 @@ namespace BuildEngineMapReader
                     sector.Floor.Z = view.ReadInt32();
 
                     var ceilingFlags = view.ReadInt16();
+                    Logger.Log("ceilingFlags: " + ceilingFlags);
                     sector.Ceiling.Stat = ParseFloorCeilingFlags(ceilingFlags);
 
                     var floorFlags = view.ReadInt16();
+                    Logger.Log("floorFlags: " + floorFlags);
                     sector.Floor.Stat = ParseFloorCeilingFlags(floorFlags);
 
                     sector.Ceiling.PicNum = view.ReadInt16();
@@ -133,7 +135,7 @@ namespace BuildEngineMapReader
 
                     sector.Visibility = view.ReadByte();
 
-                    var filler = view.ReadByte();
+                    view.ReadByte(); // filler
                     
                     sector.LoTag = view.ReadInt16();
                     sector.HiTag = view.ReadInt16();
