@@ -1,13 +1,13 @@
 using System.IO;
+using BuildEngineMapReader.Geom;
 using BuildEngineMapReader.Objects;
-using Map.Geom;
 
 namespace BuildEngineMapReader
 {
     public class MapFileReader
     {
         
-        public Objects.Map ReadFile(string filePath)
+        public Map ReadFile(string filePath)
         {
             var fileData = File.ReadAllBytes(filePath);
             return ParseFile(fileData);
@@ -81,8 +81,8 @@ namespace BuildEngineMapReader
                     wall.OverPicNum = binaryReader.ReadInt16();
                     wall.Shade = binaryReader.ReadByte();
                     wall.Palette = binaryReader.ReadByte();
-                    wall.Repeat.Set(binaryReader.ReadByte(), binaryReader.ReadByte());
-                    wall.Panning.Set(binaryReader.ReadByte(), binaryReader.ReadByte());
+                    wall.Repeat = new Point2(binaryReader.ReadByte(), binaryReader.ReadByte());
+                    wall.Panning = new Point2(binaryReader.ReadByte(), binaryReader.ReadByte());
                     wall.LoTag = binaryReader.ReadInt16();
                     wall.HiTag = binaryReader.ReadInt16();
                     wall.Extra = binaryReader.ReadInt16();
