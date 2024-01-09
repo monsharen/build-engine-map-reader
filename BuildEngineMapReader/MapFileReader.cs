@@ -7,6 +7,11 @@ namespace BuildEngineMapReader
     public class MapFileReader
     {
         
+        public Objects.Map ReadFile(string filePath)
+        {
+            var fileData = File.ReadAllBytes(filePath);
+            return ParseFile(fileData);
+        }
         private static Objects.Map ParseFile(byte[] fileData)
         {
             using (var memoryStream = new MemoryStream(fileData))
@@ -128,12 +133,6 @@ namespace BuildEngineMapReader
                 
                 return map;
             }
-        }
-
-        public Objects.Map ReadFile(string filePath)
-        {
-            var fileData = File.ReadAllBytes(filePath);
-            return ParseFile(fileData);
         }
     }
 }
