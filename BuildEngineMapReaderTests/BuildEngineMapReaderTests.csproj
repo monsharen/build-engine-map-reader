@@ -43,6 +43,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="FlagParserTest.cs" />
         <Compile Include="MapFileReaderTest.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>

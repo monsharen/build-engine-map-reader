@@ -39,6 +39,7 @@
         <Reference Include="System.Xml"/>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="FlagParser.cs" />
         <Compile Include="Logger.cs" />
         <Compile Include="Objects\*"/>
         <Compile Include="Geom\*"/>
