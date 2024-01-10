@@ -10,9 +10,9 @@ namespace BuildEngineMapReader
         public Map ReadFile(string filePath)
         {
             var fileData = File.ReadAllBytes(filePath);
-            return ParseFile(fileData);
+            return Parse(fileData);
         }
-        private static Map ParseFile(byte[] fileData)
+        public static Map Parse(byte[] fileData)
         {
             using (var memoryStream = new MemoryStream(fileData))
             using (var binaryReader = new BinaryReader(memoryStream))
