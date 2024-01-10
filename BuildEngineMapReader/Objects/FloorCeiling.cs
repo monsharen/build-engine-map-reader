@@ -2,24 +2,28 @@ namespace BuildEngineMapReader.Objects
 {
     public abstract class FloorCeiling
     {
-        public float Z { get; set; }
-        public StatData Stat { get; set; }
-        public int PicNum { get; set; }
-        public int HeightNum { get; set; }
-        public int Shade { get; set; }
-        public int Palette { get; set; }
-        public Vector2 Panning { get; set; }
+        public float Z { get; }
+        public StatData Stat { get; }
+        public int PicNum { get;}
+        public int HeightNum { get; }
+        public int Shade { get; }
+        public int Palette { get; }
+        public Vector2 Panning { get; }
 
-        protected FloorCeiling()
+        protected FloorCeiling(float z, StatData statData, int picNum, int heightNum, int shade, int palette, Vector2 panning)
         {
             if (GetType() == typeof(FloorCeiling))
             {
                 throw new System.InvalidOperationException("Cannot construct abstract instances directly");
             }
-
-            Z = 0;
-            Stat = new StatData();
-            Panning = new Vector2();
+            
+            Z = z;
+            Stat = statData;
+            PicNum = picNum;
+            HeightNum = heightNum;
+            Shade = shade;
+            Palette = palette;
+            Panning = panning;
         }
     }
 }

@@ -12,126 +12,191 @@ namespace BuildEngineMapReader
             var fileData = File.ReadAllBytes(filePath);
             return ParseFile(fileData);
         }
-        private static Objects.Map ParseFile(byte[] fileData)
+        private static Map ParseFile(byte[] fileData)
         {
             using (var memoryStream = new MemoryStream(fileData))
             using (var binaryReader = new BinaryReader(memoryStream))
             {
-                var map = new Objects.Map(binaryReader.ReadInt32());
-                map.StartPosition.X = binaryReader.ReadInt32();
-                map.StartPosition.Y = binaryReader.ReadInt32();
-                map.StartPosition.Z = binaryReader.ReadInt32();
-                map.StartPosition.Angle = binaryReader.ReadInt16();
-                map.StartSectorIndex = binaryReader.ReadInt16();
+                var version = binaryReader.ReadInt32();
+                var startPosition = new Position(
+                    binaryReader.ReadInt32(), 
+                    binaryReader.ReadInt32(), 
+                    binaryReader.ReadInt32(), 
+                    binaryReader.ReadInt16());
+                var startSectorIndex = binaryReader.ReadInt16();
 
                 var numSectors = binaryReader.ReadUInt16();
-        
-                map.Sectors = new Sector[numSectors];
+                
+                var sectors = new Sector[numSectors];
                 
                 for (var i = 0; i < numSectors; i++) {
-                    var sector = new Sector();
-                    sector.FirstWallIndex = binaryReader.ReadInt16();
-                    sector.NumWalls = binaryReader.ReadInt16();
-                    sector.Ceiling.Z = binaryReader.ReadInt32();
-                    sector.Floor.Z = binaryReader.ReadInt32();
+                    
+                    var sectorFirstWallIndex = binaryReader.ReadInt16();
+                    var sectorNumWalls = binaryReader.ReadInt16();
+                    
+                    var ceilingZ = binaryReader.ReadInt32();
+                    var floorZ = binaryReader.ReadInt32();
 
                     var ceilingFlags = binaryReader.ReadInt16();
-                    sector.Ceiling.Stat = FlagParser.ParseFloorCeilingFlags(ceilingFlags);
+                    var ceilingStatData = FlagParser.ParseFloorCeilingFlags(ceilingFlags);
 
                     var floorFlags = binaryReader.ReadInt16();
-                    sector.Floor.Stat = FlagParser.ParseFloorCeilingFlags(floorFlags);
+                    var floorStatData = FlagParser.ParseFloorCeilingFlags(floorFlags);
 
-                    sector.Ceiling.PicNum = binaryReader.ReadInt16();
-                    sector.Ceiling.HeightNum = binaryReader.ReadInt16();
-                    sector.Ceiling.Shade = binaryReader.ReadSByte();
-                    sector.Ceiling.Palette = binaryReader.ReadByte();
-                    sector.Ceiling.Panning = new Vector2(binaryReader.ReadByte(), binaryReader.ReadByte());
+                    var ceilingPicNum = binaryReader.ReadInt16();
+                    var ceilingHeightNum = binaryReader.ReadInt16();
+                    var ceilingShade = binaryReader.ReadSByte();
+                    var ceilingPalette = binaryReader.ReadByte();
+                    var ceilingPanning = new Vector2(binaryReader.ReadByte(), binaryReader.ReadByte());
 
-                    sector.Floor.PicNum = binaryReader.ReadInt16();
-                    sector.Floor.HeightNum = binaryReader.ReadInt16();
-                    sector.Floor.Shade = binaryReader.ReadSByte();
-                    sector.Floor.Palette = binaryReader.ReadByte();
-                    sector.Floor.Panning = new Vector2(binaryReader.ReadByte(), binaryReader.ReadByte());
+                    var ceiling = new Ceiling(ceilingZ, 
+                        ceilingStatData, 
+                        ceilingPicNum, 
+                        ceilingHeightNum, 
+                        ceilingShade, 
+                        ceilingPalette, 
+                        ceilingPanning);
 
-                    sector.Visibility = binaryReader.ReadByte();
+                    var floorPicNum = binaryReader.ReadInt16();
+                    var floorHeightNum = binaryReader.ReadInt16();
+                    var floorShade = binaryReader.ReadSByte();
+                    var floorPalette = binaryReader.ReadByte();
+                    var floorPanning = new Vector2(binaryReader.ReadByte(), binaryReader.ReadByte());
+                    var floor = new Floor(floorZ, 
+                        floorStatData, 
+                        floorPicNum, 
+                        floorHeightNum, 
+                        floorShade, 
+                        floorPalette, 
+                        floorPanning);
+                    
+                    var sectorVisibility = binaryReader.ReadByte();
 
                     binaryReader.ReadByte(); // filler
                     
-                    sector.LoTag = binaryReader.ReadInt16();
-                    sector.HiTag = binaryReader.ReadInt16();
-                    sector.Extra = binaryReader.ReadInt16();
+                    var sectorLoTag = binaryReader.ReadInt16();
+                    var sectorHiTag = binaryReader.ReadInt16();
+                    var sectorExtra = binaryReader.ReadInt16();
 
-                    map.Sectors[i] = sector;
+                    var sector = new Sector(sectorFirstWallIndex, 
+                        sectorNumWalls, 
+                        ceiling, 
+                        floor, 
+                        sectorVisibility, 
+                        sectorLoTag, 
+                        sectorHiTag, 
+                        sectorExtra);
+                    sectors[i] = sector;
                 }
                 
                 var numWalls = binaryReader.ReadUInt16();
-                map.Walls = new Wall[numWalls];
+                var walls = new Wall[numWalls];
                 
-                for (var i = 0; i < numWalls; i++) {
-                    var wall = new Wall(binaryReader.ReadInt32(), binaryReader.ReadInt32());
-                    wall.Point2 = binaryReader.ReadInt16();
-                    wall.NextWall = binaryReader.ReadInt16();
-                    wall.NextSector = binaryReader.ReadInt16();
+                for (var i = 0; i < numWalls; i++)
+                {
+                    var x = binaryReader.ReadInt32();
+                    var y = binaryReader.ReadInt32();
+                    var nextWallPoint2 = binaryReader.ReadInt16();
+                    var wallNextWall = binaryReader.ReadInt16();
+                    var wallNextSector = binaryReader.ReadInt16();
 
                     var wallFlags = binaryReader.ReadInt16();
-                    
-                    wall.Stat = FlagParser.ParseWallFlags(wallFlags);
+                    var wallStat = FlagParser.ParseWallFlags(wallFlags);
 
-                    wall.PicNum = binaryReader.ReadInt16();
-                    wall.OverPicNum = binaryReader.ReadInt16();
-                    wall.Shade = binaryReader.ReadByte();
-                    wall.Palette = binaryReader.ReadByte();
-                    wall.Repeat = new Point2(binaryReader.ReadByte(), binaryReader.ReadByte());
-                    wall.Panning = new Point2(binaryReader.ReadByte(), binaryReader.ReadByte());
-                    wall.LoTag = binaryReader.ReadInt16();
-                    wall.HiTag = binaryReader.ReadInt16();
-                    wall.Extra = binaryReader.ReadInt16();
+                    var wallPicNum = binaryReader.ReadInt16();
+                    var wallOverPicNum = binaryReader.ReadInt16();
+                    var wallShade = binaryReader.ReadByte();
+                    var wallPalette = binaryReader.ReadByte();
+                    var wallRepeat = new Point2(binaryReader.ReadByte(), binaryReader.ReadByte());
+                    var wallPanning = new Point2(binaryReader.ReadByte(), binaryReader.ReadByte());
+                    var wallLoTag = binaryReader.ReadInt16();
+                    var wallHiTag = binaryReader.ReadInt16();
+                    var wallExtra = binaryReader.ReadInt16();
                     
-                    map.Walls[i] = wall;
+                    var wall = new Wall(
+                        x,
+                        y,
+                        nextWallPoint2,
+                        wallNextWall,
+                        wallNextSector,
+                        wallStat,
+                        wallPicNum,
+                        wallOverPicNum,
+                        wallShade,
+                        wallPalette,
+                        wallRepeat,
+                        wallPanning,
+                        wallLoTag,
+                        wallHiTag,
+                        wallExtra
+                    );
+                    
+                    walls[i] = wall;
                 }
                 
-                
                 var numSprites = binaryReader.ReadUInt16();
-                map.Sprites = new Sprite[numSprites];
+                var sprites = new Sprite[numSprites];
 
-                for (var i = 0; i < numSprites; i++) {
-                    var sprite = new Sprite(
-                        binaryReader.ReadInt32(),
-                        binaryReader.ReadInt32(),
-                        binaryReader.ReadInt32()
-                    );
-
+                for (var i = 0; i < numSprites; i++)
+                {
+                    var x = binaryReader.ReadInt32();
+                    var y = binaryReader.ReadInt32();
+                    var z = binaryReader.ReadInt32();
+                    
                     var spriteFlags = binaryReader.ReadInt16();
-                    sprite.Stat = FlagParser.ParseSpriteFlags(spriteFlags);
+                    var spriteStat = FlagParser.ParseSpriteFlags(spriteFlags);
 
-                    sprite.PicNum = binaryReader.ReadInt16();
-                    sprite.Shade = binaryReader.ReadSByte(); // Or should it be ReadByte?
-                    sprite.Palette = binaryReader.ReadByte(); // Or should it be ReadSByte?
-                    sprite.ClipDistance = binaryReader.ReadByte(); // Or should it be ReadSByte?
+                    var spritePicNum = binaryReader.ReadInt16();
+                    var spriteShade = binaryReader.ReadSByte(); // Or should it be ReadByte?
+                    var spritePalette = binaryReader.ReadByte(); // Or should it be ReadSByte?
+                    var spriteClipDistance = binaryReader.ReadByte(); // Or should it be ReadSByte?
                     
                     binaryReader.ReadByte(); // padding
 
-                    sprite.Repeat = new Vector2(binaryReader.ReadByte(), binaryReader.ReadByte());
-                    sprite.Offset = new Vector2(binaryReader.ReadSByte(), binaryReader.ReadSByte());
-                    sprite.CurrentSectorIndex = binaryReader.ReadInt16();
-                    sprite.CurrentStatus = binaryReader.ReadInt16();
-                    sprite.Angle = binaryReader.ReadInt16();
-                    sprite.Owner = binaryReader.ReadInt16();
+                    var spriteRepeat = new Vector2(binaryReader.ReadByte(), binaryReader.ReadByte());
+                    var spriteOffset = new Vector2(binaryReader.ReadSByte(), binaryReader.ReadSByte());
+                    var spriteCurrentSectorIndex = binaryReader.ReadInt16();
+                    var spriteCurrentStatus = binaryReader.ReadInt16();
+                    var spriteAngle = binaryReader.ReadInt16();
+                    var spriteOwner = binaryReader.ReadInt16();
 
-                    sprite.Velocity = new Point3(
+                    var position = new Position(
+                        x,
+                        y,
+                        z, spriteAngle);
+                    
+                    var spriteVelocity = new Point3(
                         binaryReader.ReadInt16(),
                         binaryReader.ReadInt16(),
                         binaryReader.ReadInt16()
                     );
 
-                    sprite.LoTag = binaryReader.ReadInt16();
-                    sprite.HiTag = binaryReader.ReadInt16();
-                    sprite.Extra = binaryReader.ReadInt16();
+                    var spriteLoTag = binaryReader.ReadInt16();
+                    var spriteHiTag = binaryReader.ReadInt16();
+                    var spriteExtra = binaryReader.ReadInt16();
+                    
+                    var sprite = new Sprite(
+                        position,
+                        spriteStat,
+                        spritePicNum,
+                        spriteShade,
+                        spritePalette,
+                        spriteClipDistance,
+                        spriteRepeat,
+                        spriteOffset,
+                        spriteCurrentSectorIndex,
+                        spriteCurrentStatus,
+                        spriteOwner,
+                        spriteVelocity,
+                        spriteLoTag,
+                        spriteHiTag,
+                        spriteExtra
+                    );
 
-                    map.Sprites[i] = sprite;
+                    sprites[i] = sprite;
                 }
                 
-                return map;
+                return new Map(version, startPosition, sectors, walls, sprites, startSectorIndex);
             }
         }
     }

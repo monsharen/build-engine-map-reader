@@ -11,34 +11,16 @@ namespace BuildEngineMapReader.Objects
         public int HiTag { get; set; }
         public int Extra { get; set; }
 
-        public EditorMeta EditorMeta { get; private set; }
-        public RendererMeta RendererMeta { get; private set; }
-
-        public Sector()
+        public Sector(int firstWallIndex, int numWalls, Ceiling ceiling, Floor floor, int visibility, int loTag, int hiTag, int extra)
         {
-            FirstWallIndex = 0; // Assuming a default value
-            NumWalls = 0;
-            Ceiling = new Ceiling();
-            Floor = new Floor();
-            Visibility = 0;
-            LoTag = 0;
-            HiTag = 0;
-            Extra = -1;
-
-            EditorMeta = new EditorMeta();
-            RendererMeta = new RendererMeta();
+            FirstWallIndex = firstWallIndex;
+            NumWalls = numWalls;
+            Ceiling = ceiling;
+            Floor = floor;
+            Visibility = visibility;
+            LoTag = loTag;
+            HiTag = hiTag;
+            Extra = extra;
         }
     }
-
-    public class EditorMeta
-    {
-        // EditorMeta class definition
-    }
-
-    public class RendererMeta
-    {
-        // RendererMeta class definition
-    }
-
-// Include the Floor and Ceiling class definitions from the previous example
 }

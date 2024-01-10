@@ -6,47 +6,46 @@ namespace BuildEngineMapReader
     {
         public static StatData ParseFloorCeilingFlags(int input)
         {
-            var statData = new StatData();
-            statData.Parallaxing = ParseBoolFlag(input, 0);
-            statData.Sloped = ParseBoolFlag(input, 1);
-            statData.SwapXY = ParseBoolFlag(input, 2);
-            statData.DoubleSmooshiness = ParseBoolFlag(input, 3);
-            statData.XFlip = ParseBoolFlag(input, 4);
-            statData.YFlip = ParseBoolFlag(input, 5);
-            statData.AlignTextureToFirstWall = ParseBoolFlag(input, 6);
-            return statData;
+            return StatData.GetBuilder()
+                .SetParallaxing(ParseBoolFlag(input, 0))
+                .SetSloped(ParseBoolFlag(input, 1))
+                .SetSwapXY(ParseBoolFlag(input, 2))
+                .SetDoubleSmooshiness(ParseBoolFlag(input, 3))
+                .SetXFlip(ParseBoolFlag(input, 4))
+                .SetYFlip(ParseBoolFlag(input, 5))
+                .SetAlignTextureToFirstWall(ParseBoolFlag(input, 6))
+                .Build();
         }
         
         public static StatData ParseWallFlags(int input)
         {
-            var statData = new StatData();
-            statData.BlockClipMove = ParseBoolFlag(input, 0);
-            statData.BottomsInvisibleSwapped = ParseBoolFlag(input, 1);
-            statData.AlignPictureBottom = ParseBoolFlag(input, 2);
-            statData.XFlip = ParseBoolFlag(input, 3);
-            statData.Mask = ParseBoolFlag(input, 4);
-            statData.OneWay = ParseBoolFlag(input, 5);
-            statData.BlockHitScan = ParseBoolFlag(input, 6);
-            statData.Translucent = ParseBoolFlag(input, 7);
-            statData.YFlip = ParseBoolFlag(input, 8);
-            statData.TranslucentReverse = ParseBoolFlag(input, 9);
-            return statData;
+            return StatData.GetBuilder()
+                .SetBlockClipMove(ParseBoolFlag(input, 0))
+                .SetBottomsInvisibleSwapped(ParseBoolFlag(input, 1))
+                .SetAlignPictureBottom(ParseBoolFlag(input, 2))
+                .SetXFlip(ParseBoolFlag(input, 3))
+                .SetMask(ParseBoolFlag(input, 4))
+                .SetOneWay(ParseBoolFlag(input, 5))
+                .SetBlockHitScan(ParseBoolFlag(input, 6))
+                .SetTranslucent(ParseBoolFlag(input, 7))
+                .SetYFlip(ParseBoolFlag(input, 8))
+                .SetTranslucentReverse(ParseBoolFlag(input, 9))
+                .Build();
         }
         
         public static StatData ParseSpriteFlags(int input)
         {
-            var statData = new StatData();
-            statData.BlockClipMove = ParseBoolFlag(input, 0);
-            statData.Translucent = ParseBoolFlag(input, 1);
-            statData.XFlip = ParseBoolFlag(input, 2);
-            statData.YFlip = ParseBoolFlag(input, 3);
-            statData.Orientation = (Sprite.Orientation)ParseIntFlag(input, 4, 2);
-            statData.OneSided = ParseBoolFlag(input, 6);
-            statData.RealCentered = ParseBoolFlag(input, 7);
-            statData.BlockHitScan = ParseBoolFlag(input, 8);
-            statData.TranslucentReverse = ParseBoolFlag(input, 9);
-            statData.Invisible = ParseBoolFlag(input, 15);
-            return statData;
+            return StatData.GetBuilder()
+                .SetBlockClipMove(ParseBoolFlag(input, 0))
+                .SetTranslucent(ParseBoolFlag(input, 1))
+                .SetXFlip(ParseBoolFlag(input, 2))
+                .SetYFlip(ParseBoolFlag(input, 3))
+                .SetOrientation((Sprite.Orientation)ParseIntFlag(input, 4, 2))
+                .SetOneSided(ParseBoolFlag(input, 6))
+                .SetRealCentered(ParseBoolFlag(input, 7))
+                .SetBlockHitScan(ParseBoolFlag(input, 8))
+                .SetTranslucentReverse(ParseBoolFlag(input, 9))
+                .SetInvisible(ParseBoolFlag(input, 15)).Build();
         }
 
         private static bool ParseBoolFlag(int input, int index)

@@ -11,7 +11,7 @@ namespace BuildEngineMapReader.Objects
             Floor = 2
         }
 
-        public Point3 Position { get; internal set; }
+        public Position Position { get; internal set; }
         public float Angle { get; internal set; }
         public StatData Stat { get; internal set; }
         public int PicNum { get; set; }
@@ -28,15 +28,23 @@ namespace BuildEngineMapReader.Objects
         public int HiTag { get; set; }
         public int Extra { get; set; }
 
-        public Sprite(float x = 0, float y = 0, float z = 0, float angle = 0)
+        public Sprite(Position position, StatData stat, int picNum, int shade, int palette, int clipDistance, Vector2 repeat, Vector2 offset, int currentSectorIndex, int currentStatus, int owner, Point3 velocity, int loTag, int hiTag, int extra)
         {
-            Position = new Point3(x, y, z);
-            Angle = angle;
-            Stat = new StatData();
-            Repeat = new Vector2();
-            Offset = new Vector2();
-            Velocity = new Point3();
+            Position = position;
+            Stat = stat;
+            PicNum = picNum;
+            Shade = shade;
+            Palette = palette;
+            ClipDistance = clipDistance;
+            Repeat = repeat;
+            Offset = offset;
+            CurrentSectorIndex = currentSectorIndex;
+            CurrentStatus = currentStatus;
+            Owner = owner;
+            Velocity = velocity;
+            LoTag = loTag;
+            HiTag = hiTag;
+            Extra = extra;
         }
-        // GetProps method can be implemented as needed
     }
 }

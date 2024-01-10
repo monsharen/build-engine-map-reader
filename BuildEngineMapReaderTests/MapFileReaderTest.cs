@@ -15,7 +15,5 @@ namespace BuildEngineMapReaderTests
             var map = mapFileReader.ReadFile(filePath);
             Console.WriteLine(map);
         }
-        
-        
     }
 }

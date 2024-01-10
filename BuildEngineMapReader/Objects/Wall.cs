@@ -4,31 +4,35 @@ namespace BuildEngineMapReader.Objects
 {
     public class Wall : Point2
     {
-        public int Point2 { get; set; }
-        public int NextWall { get; set; }
-        public int NextSector { get; set; }
-        public StatData Stat { get; internal set; }
-        public int PicNum { get; set; }
-        public int OverPicNum { get; set; }
-        public int Shade { get; set; }
-        public int Palette { get; set; }
-        public Point2 Repeat { get; set; }
-        public Point2 Panning { get; set; }
-        public int LoTag { get; set; }
-        public int HiTag { get; set; }
-        public int Extra { get; set; }
+        public short NextWallPoint2 { get; }
+        public int NextWall { get; }
+        public int NextSector { get; }
+        public StatData Stat { get; }
+        public int PicNum { get; }
+        public int OverPicNum { get; }
+        public int Shade { get; }
+        public int Palette { get; }
+        public Point2 Repeat { get; }
+        public Point2 Panning { get; }
+        public int LoTag { get; }
+        public int HiTag { get; }
+        public int Extra { get; }
 
-        public Wall(float x = 0, float y = 0) : base(x, y)
+        public Wall(float x, float y, short nextWallPoint2, int nextWall, int nextSector, StatData stat, int picNum, int overPicNum, int shade, int palette, Point2 repeat, Point2 panning, int loTag, int hiTag, int extra) : base(x, y)
         {
-            NextWall = -1;
-            NextSector = -1;
-            Stat = new StatData();
-            Repeat = new Point2();
-            Panning = new Point2();
-            Extra = -1;
+            NextWallPoint2 = nextWallPoint2;
+            NextWall = nextWall;
+            NextSector = nextSector;
+            Stat = stat;
+            PicNum = picNum;
+            OverPicNum = overPicNum;
+            Shade = shade;
+            Palette = palette;
+            Repeat = repeat;
+            Panning = panning;
+            LoTag = loTag;
+            HiTag = hiTag;
+            Extra = extra;
         }
-
-        // Implement Point2 class
-        // Implement the GetProps method as needed
     }
 }
