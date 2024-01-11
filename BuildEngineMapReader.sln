@@ -1,8 +1,8 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildEngineMapReader", "BuildEngineMapReader\BuildEngineMapReader.csproj", "{92368128-38EE-4521-83BC-B04BD01F3996}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildEngineMapReader", "BuildEngineMapReader\BuildEngineMapReader.csproj", "{92368128-38EE-4521-83BC-B04BD01F3996}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildEngineMapReaderTests", "BuildEngineMapReaderTests\BuildEngineMapReaderTests.csproj", "{0CB54779-D01D-468B-9DDB-594FFBBD97B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildEngineMapReaderTests", "BuildEngineMapReaderTests\BuildEngineMapReaderTests.csproj", "{0CB54779-D01D-468B-9DDB-594FFBBD97B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
