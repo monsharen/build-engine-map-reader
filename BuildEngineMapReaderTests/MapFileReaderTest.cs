@@ -10,7 +10,7 @@ namespace BuildEngineMapReaderTests
         [Test]
         public void ShouldParseBuildMap()
         {
-            const string filePath = "/Users/thomas.rosenquist/git/BuildEngineMapReader/Maps/THE_BASE.MAP";
+            const string filePath = "../../../../Maps/THE_BASE.MAP";
             var mapFileReader = new MapFileReader();
             var map = mapFileReader.ReadFile(filePath);
             Console.WriteLine(map);
