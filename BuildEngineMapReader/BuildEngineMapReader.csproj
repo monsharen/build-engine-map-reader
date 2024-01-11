@@ -9,8 +9,4 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Objects\*" />
-    <Compile Include="Geom\*" />
-  </ItemGroup>
 </Project>

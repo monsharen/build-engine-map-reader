@@ -13,9 +13,6 @@
     <ProjectReference Include="..\BuildEngineMapReader\BuildEngineMapReader.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Objects\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="NUnit" Version="4.0.1" />
   </ItemGroup>
 </Project>
